@@ -1,4 +1,4 @@
-package com.xiaoyuz.puppy.common.constants
+package com.xiaoyuz.puppy.datastore.domains
 
 enum class VideoSource(val value: Int) {
     DEFAULT(0),

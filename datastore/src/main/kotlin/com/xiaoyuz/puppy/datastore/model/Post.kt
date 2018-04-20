@@ -3,11 +3,23 @@ package com.xiaoyuz.puppy.datastore.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.xiaoyuz.puppy.common.extensions.map
 import org.json.JSONObject
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
 
+@Entity
+@Table(name = "post")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Post(var id: Int = 0, var name: String = "", var link: String = "",
-                var thumbnails: String = "[]", var description: String = "",
-                var videos: List<Video> = emptyList())
+data class Post(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
+                @Column(name = "post_id", nullable = false, length = 32) var postId: String = "",
+                @Column(nullable = false) var name: String = "",
+                @Column(nullable = false) var link: String = "",
+                @Column(columnDefinition = "TEXT") var thumbnails: String = "[]",
+                @Column(columnDefinition = "TEXT") var description: String = "",
+                @Transient var videos: List<Video> = emptyList())
 
 fun vimeoResult2Post(json: JSONObject): Post {
     val video = vimeoResult2Video(json)
