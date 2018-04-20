@@ -20,7 +20,7 @@ class VimeoService {
             val perPagePosts = mVimeoClient.getCategoryPosts(category, i, 25)
             if (perPagePosts.isNotEmpty()) {
                 posts.addAll(perPagePosts)
-                logger.info { "[Vimeo] Page $i is finished." }
+                logger.info { "[Vimeo] Page $i is finished. Count is ${posts.size}" }
             } else {
                 break
             }

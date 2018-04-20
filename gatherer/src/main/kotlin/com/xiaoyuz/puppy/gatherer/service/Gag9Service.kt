@@ -21,7 +21,7 @@ class Gag9Service {
             val page = mGag9Client.getGroupPosts(group, nextCursor)
             if (page.first.isNotEmpty()) {
                 posts.addAll(page.first)
-                logger.info { "[9Gag] Page $i is finished." }
+                logger.info { "[9Gag] Page $i is finished. Count is ${posts.size}" }
             } else {
                 break
             }

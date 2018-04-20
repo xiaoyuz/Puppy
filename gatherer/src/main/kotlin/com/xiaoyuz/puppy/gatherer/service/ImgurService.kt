@@ -20,7 +20,7 @@ class ImgurService {
             val perPagePosts = mImgurClient.getGalleyTagPosts(tag, i)
             if (perPagePosts.isNotEmpty()) {
                 posts.addAll(perPagePosts)
-                logger.info { "[Imgur] Page $i is finished." }
+                logger.info { "[Imgur] Page $i is finished. Count is ${posts.size}" }
             } else {
                 break
             }

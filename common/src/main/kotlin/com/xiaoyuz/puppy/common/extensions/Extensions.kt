@@ -94,3 +94,10 @@ fun <T, R> gatherFromCacheAndDb(key: String, id: T, getFromCache: (String) -> R?
 fun String.toUrlEncode(enc: String = "utf-8") = URLEncoder.encode(this, enc)
 
 fun String.safeToInt() = try { this.toInt() } catch (e: NumberFormatException) { null }
+
+
+fun <T> retry(func: () -> T, time: Int = 5): T? = if (time > 0) try {
+    func()
+} catch (e: Exception) {
+    retry(func, time - 1)
+} else null
