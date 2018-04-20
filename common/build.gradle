@@ -1,0 +1,7 @@
+dependencies {
+    compile group: 'io.github.microutils', name: 'kotlin-logging', version: '1.4.6'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+    compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.13.6.RELEASE'
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compile "org.json:json:20140107"
+}

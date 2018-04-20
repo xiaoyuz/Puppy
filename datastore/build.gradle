@@ -1,0 +1,5 @@
+dependencies {
+    compile project(":common")
+    compile group: 'com.clickntap', name: 'vimeo', version: '1.10'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+}

@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":datastore")
+    compile group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.30'
+}
