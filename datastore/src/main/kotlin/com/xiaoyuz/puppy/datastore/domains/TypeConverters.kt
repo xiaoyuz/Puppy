@@ -27,3 +27,15 @@ class VideoTypeConverter : AttributeConverter<VideoType, Int> {
                 .firstOrNull { it.value == dbData } ?: throw FormatException("Format $dbData is illegal")
     }
 }
+
+@Converter(autoApply = true)
+class TagTypeConverter : AttributeConverter<TagType, String> {
+    override fun convertToDatabaseColumn(attribute: TagType): String {
+        return attribute.value
+    }
+
+    override fun convertToEntityAttribute(dbData: String?): TagType {
+        return if (dbData == null) throw FormatException("Format is null") else TagType.values()
+                .firstOrNull { it.value == dbData } ?: throw FormatException("Format $dbData is illegal")
+    }
+}

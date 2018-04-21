@@ -13,3 +13,9 @@ enum class VideoType(val value: Int) {
     VIDEO(2),
     GIF(3)
 }
+
+enum class TagType(val value: String) {
+    DEFAULT("default"),
+    NATURE("nature"),
+    CUTE("cute")
+}

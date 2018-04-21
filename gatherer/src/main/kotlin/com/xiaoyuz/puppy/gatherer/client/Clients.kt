@@ -3,6 +3,7 @@ package com.xiaoyuz.puppy.gatherer.client
 import com.clickntap.vimeo.Vimeo
 import com.xiaoyuz.puppy.common.extensions.map
 import com.xiaoyuz.puppy.common.extensions.retry
+import com.xiaoyuz.puppy.datastore.domains.TagType
 import com.xiaoyuz.puppy.datastore.model.Post
 import com.xiaoyuz.puppy.datastore.model.gag9Result2Post
 import com.xiaoyuz.puppy.datastore.model.imgurResult2Post
@@ -23,13 +24,13 @@ class VimeoClient {
     @Autowired
     private lateinit var mVimeo: Vimeo
 
-    fun getCategoryPosts(category: String, page: Int = 1, perPage: Int = 25): List<Post> {
+    fun getCategoryPosts(tagConfigPair: Pair<String, TagType>, page: Int = 1, perPage: Int = 25): List<Post> {
         val func = {
-            mVimeo.get("/categories/$category/videos?sort=date&direction=desc&page=$page&per_page=$perPage")
+            mVimeo.get("/categories/${tagConfigPair.first}/videos?sort=date&direction=desc&page=$page&per_page=$perPage")
         }
         val response = retry(func, 5)
         return response?.let {
-            it.json.getJSONArray("data").map { vimeoResult2Post(it as JSONObject) }
+            it.json.getJSONArray("data").map { vimeoResult2Post(it as JSONObject, tagConfigPair.second) }
         }?: emptyList()
     }
 }
@@ -44,18 +45,18 @@ class ImgurClient {
     @Autowired
     private lateinit var mRestTemplate: RestTemplate
 
-    fun getGalleyTagPosts(tag: String, page: Int = 0): List<Post> {
+    fun getGalleyTagPosts(tagConfigPair: Pair<String, TagType>, page: Int = 0): List<Post> {
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
             set("Authorization", "Client-ID $mImgurAppId")
         }
         val func = {
-            mRestTemplate.exchange("${mImgurApiHost}gallery/t/$tag/time/day/$page",
+            mRestTemplate.exchange("${mImgurApiHost}gallery/t/${tagConfigPair.first}/time/day/$page",
                     HttpMethod.GET, HttpEntity<String>(headers), String::class.java)
         }
         val responseEntity = retry(func, 5)
         return responseEntity?.let { JSONObject(it.body).getJSONObject("data").getJSONArray("items").map {
-            imgurResult2Post(it as JSONObject) }
+            imgurResult2Post(it as JSONObject, tagConfigPair.second) }
         }?: emptyList()
     }
 }
@@ -68,9 +69,9 @@ class Gag9Client {
     @Autowired
     private lateinit var mRestTemplate: RestTemplate
 
-    fun getGroupPosts(group: String, cursor: String? = null): Pair<List<Post>, String> {
+    fun getGroupPosts(tagConfigPair: Pair<String, TagType>, cursor: String? = null): Pair<List<Post>, String> {
         val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
-        val url = "${m9GagApiHost}group-posts/group/$group/type/fresh?${cursor?.let { it }}"
+        val url = "${m9GagApiHost}group-posts/group/${tagConfigPair.first}/type/fresh?${cursor?.let { it }}"
         val func = {
             mRestTemplate.exchange(url, HttpMethod.GET,
                     HttpEntity<String>(headers), String::class.java)
@@ -80,7 +81,7 @@ class Gag9Client {
             val resultJson = JSONObject(entity.body).getJSONObject("data")
             val nextCursor = resultJson.getString("nextCursor")
             resultJson.getJSONArray("posts").map {
-                gag9Result2Post(it as JSONObject)
+                gag9Result2Post(it as JSONObject, tagConfigPair.second)
             } to nextCursor
         }?: emptyList<Post>() to ""
     }
