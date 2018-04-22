@@ -72,7 +72,7 @@ fun gag9Result2Video(json: JSONObject) = Video(videoId = reducedUUID(), name = j
         width = image700.optInt("width")
         height = image700.optInt("height")
     } else {
-        val image460sv = images.optJSONObject("image460sv")
+        val image460sv = images.optJSONObject("image460sv") ?: images.optJSONObject("image460")
         core = image460sv.optString("url")
         if (image460sv.optInt("hasAudio") == 0) {
             videoType = VideoType.GIF
