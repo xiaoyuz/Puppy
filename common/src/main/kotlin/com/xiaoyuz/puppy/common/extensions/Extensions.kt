@@ -60,13 +60,16 @@ fun <R> String.jsonArrayMap(transform: (String) -> R): List<R>? {
  * if part of data set is not in cache, get the part from db and gather them.
  */
 fun <T, R : Any> gatherListFromCacheAndDataSource(ids: List<T>, getFromCache: (List<T>) -> Map<T, R>,
-                                                  getMapFromDb: (List<T>) -> Map<T, R>?, cacheOps: (Map<T, R>) -> Unit): List<R?> {
-    val result = gatherMapFromCacheAndDataSource(ids, getFromCache = getFromCache, getMapFromRemote = getMapFromDb, cacheOps = cacheOps)
+                                                  getMapFromDb: (List<T>) -> Map<T, R>?,
+                                                  cacheOps: (Map<T, R>) -> Unit): List<R?> {
+    val result = gatherMapFromCacheAndDataSource(ids, getFromCache = getFromCache, getMapFromRemote = getMapFromDb,
+            cacheOps = cacheOps)
     return ids.map { result[it] }
 }
 
 fun <T, R> gatherMapFromCacheAndDataSource(ids: List<T>, getFromCache: (List<T>) -> Map<T, R>,
-                                           getMapFromRemote: (List<T>) -> Map<T, R>?, cacheOps: (Map<T, R>) -> Unit): Map<T, R> {
+                                           getMapFromRemote: (List<T>) -> Map<T, R>?,
+                                           cacheOps: (Map<T, R>) -> Unit): Map<T, R> {
     val distinctIds = ids.distinct()
     val caches = getFromCache(distinctIds)
     val noMatchedInfos = distinctIds.filter { caches[it] == null }
@@ -94,7 +97,6 @@ fun <T, R> gatherFromCacheAndDb(key: String, id: T, getFromCache: (String) -> R?
 fun String.toUrlEncode(enc: String = "utf-8") = URLEncoder.encode(this, enc)
 
 fun String.safeToInt() = try { this.toInt() } catch (e: NumberFormatException) { null }
-
 
 fun <T> retry(func: () -> T, time: Int = 5): T? = if (time > 0) try {
     func()

@@ -1,7 +1,6 @@
 package com.xiaoyuz.puppy.gatherer.tasks
 
 import com.xiaoyuz.puppy.gatherer.constants.IMGUR_TAGS
-import com.xiaoyuz.puppy.gatherer.constants.VIMEO_CATEGORIES
 import com.xiaoyuz.puppy.gatherer.service.GatherService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
