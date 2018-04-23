@@ -40,7 +40,10 @@ class ManagerController {
     @GetMapping("/craw/9gag")
     fun craw9GagPages(): List<Post> {
         val startTime = System.currentTimeMillis()
-        val list = mGatherService.gather9GagAllPosts(GAG9_GROUPS[0])
+        val list = mutableListOf<Post>()
+        GAG9_GROUPS.forEach {
+            list.addAll(mGatherService.gather9GagAllPosts(it))
+        }
         logger.info { "Crawler finished, time: ${(System.currentTimeMillis() - startTime) / 1000}s" }
         return list
     }

@@ -71,7 +71,7 @@ class Gag9Client {
 
     fun getGroupPosts(tagConfigPair: Pair<String, TagType>, cursor: String? = null): Pair<List<Post>, String> {
         val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
-        val url = "${m9GagApiHost}group-posts/group/${tagConfigPair.first}/type/fresh?${cursor?.let { it }}"
+        val url = "${m9GagApiHost}group-posts/group/${tagConfigPair.first}?${cursor?.let { it }}"
         val func = {
             mRestTemplate.exchange(url, HttpMethod.GET,
                     HttpEntity<String>(headers), String::class.java)
