@@ -1,3 +1,8 @@
+bootJar {
+    manifest {
+    }
+}
+
 dependencies {
     compile project(":common")
     compile group: 'com.clickntap', name: 'vimeo', version: '1.10'
