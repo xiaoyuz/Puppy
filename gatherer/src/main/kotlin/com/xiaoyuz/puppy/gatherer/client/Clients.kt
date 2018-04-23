@@ -51,7 +51,7 @@ class ImgurClient {
             set("Authorization", "Client-ID $mImgurAppId")
         }
         val func = {
-            mRestTemplate.exchange("${mImgurApiHost}gallery/t/${tagConfigPair.first}/time/day/$page",
+            mRestTemplate.exchange("${mImgurApiHost}gallery/t/${tagConfigPair.first}/$page",
                     HttpMethod.GET, HttpEntity<String>(headers), String::class.java)
         }
         val responseEntity = retry(func, 5)

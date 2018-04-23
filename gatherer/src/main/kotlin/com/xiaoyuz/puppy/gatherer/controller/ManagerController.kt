@@ -32,7 +32,10 @@ class ManagerController {
     @GetMapping("/craw/imgur")
     fun crawImgurPages(@RequestParam(value = "max") maxPage: Int): List<Post> {
         val startTime = System.currentTimeMillis()
-        val list = mGatherService.gatherImgurAllPosts(IMGUR_TAGS[0], maxPage)
+        val list = mutableListOf<Post>()
+        IMGUR_TAGS.forEach {
+            list.addAll(mGatherService.gatherImgurAllPosts(it, maxPage))
+        }
         logger.info { "Crawler finished, time: ${(System.currentTimeMillis() - startTime) / 1000}s" }
         return list
     }

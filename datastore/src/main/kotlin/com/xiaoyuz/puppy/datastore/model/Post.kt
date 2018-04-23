@@ -1,6 +1,7 @@
 package com.xiaoyuz.puppy.datastore.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.xiaoyuz.puppy.common.extensions.currentTimestamp
 import com.xiaoyuz.puppy.common.extensions.map
 import com.xiaoyuz.puppy.common.extensions.reducedUUID
 import com.xiaoyuz.puppy.datastore.domains.TagType
@@ -32,7 +33,7 @@ fun vimeoResult2Post(json: JSONObject, tagType: TagType): Post {
             link = json.optString("link"), postId = reducedUUID()).apply {
         thumbnails = video.thumbnails
         videos = listOf(video)
-        createTime = videos.firstOrNull()?.createTime
+        createTime = currentTimestamp()
     }
 }
 
@@ -43,12 +44,12 @@ fun imgurResult2Post(json: JSONObject, tagType: TagType): Post {
     }?: listOf(imgurResult2Video(json))
     return Post(name = json.optString("title"), tagType = tagType, description = json.optString("description"),
             link = json.optString("link"), thumbnails = videos.first().thumbnails,
-            postId = reducedUUID(), videos = videos, createTime = videos.firstOrNull()?.createTime)
+            postId = reducedUUID(), videos = videos, createTime = currentTimestamp())
 }
 
 fun gag9Result2Post(json: JSONObject, tagType: TagType): Post {
     val video = gag9Result2Video(json)
     return Post(name = json.optString("title"), tagType = tagType, link = json.optString("url"),
             thumbnails = video.thumbnails, postId = reducedUUID(),
-            videos = listOf(video), createTime = video.createTime)
+            videos = listOf(video), createTime = currentTimestamp())
 }
