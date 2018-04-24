@@ -1,2 +1,2 @@
-include 'common', 'gatherer', 'datastore'
+include 'common', 'gatherer', 'datastore', 'content'
 

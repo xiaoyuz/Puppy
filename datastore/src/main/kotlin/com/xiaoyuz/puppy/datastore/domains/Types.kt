@@ -14,6 +14,14 @@ enum class VideoType(val value: Int) {
     GIF(3)
 }
 
+enum class PostMediaType(val value: Int) {
+    DEFAULT(0),
+    IMAGE(1),
+    VIDEO(2),
+    GIF(3),
+    MIXED(4)
+}
+
 enum class TagType(val value: String) {
     DEFAULT("default"),
     NATURE("nature"),
