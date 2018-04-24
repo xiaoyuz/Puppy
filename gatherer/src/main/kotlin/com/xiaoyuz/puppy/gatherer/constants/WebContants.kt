@@ -6,7 +6,7 @@ import com.xiaoyuz.puppy.datastore.domains.TagType
 internal val VIMEO_CATEGORIES = listOf("nature" to TagType.NATURE)
 
 // IMGUR
-internal val IMGUR_TAGS = listOf("pets/time/day" to TagType.CUTE, "pets/top/day" to TagType.CUTE,
+internal val IMGUR_TAGS = listOf("pets/time/day" to TagType.CUTE, "pets/top/week" to TagType.CUTE,
         "pets/viral/day" to TagType.CUTE)
 
 // 9GAG
