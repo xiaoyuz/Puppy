@@ -11,7 +11,7 @@ internal class IndexOperator {
 
     fun addIndex(indexKey: String, index: Any, score: Double) {
         if (mIndexRedisRepository.exists(indexKey)) {
-            mIndexRedisRepository.addIndex(indexKey, index.toString(), score)
+            mIndexRedisRepository.addIndex(indexKey, index, score)
         }
     }
 

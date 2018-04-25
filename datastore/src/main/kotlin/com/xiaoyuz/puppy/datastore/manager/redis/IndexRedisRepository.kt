@@ -22,9 +22,9 @@ class IndexRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRed
 
     fun getIndexes(names: List<String>) = names.associate { it to getIndexes(it) }
 
-    fun deleteIndex(name: String, id: String) = mObjectRedisTemplate.opsForZSet().remove(getIndexKey(name), id)
+    fun deleteIndex(name: String, index: Any) = mObjectRedisTemplate.opsForZSet().remove(getIndexKey(name), index)
 
-    fun addIndex(name: String, index: String, score: Double) = mObjectRedisTemplate.opsForZSet().add(getIndexKey(name), index, score)
+    fun addIndex(name: String, index: Any, score: Double) = mObjectRedisTemplate.opsForZSet().add(getIndexKey(name), index, score)
 
     fun flushIndexes(name: String) = mObjectRedisTemplate.delete(getIndexKey(name))
 
