@@ -75,4 +75,8 @@ class GatherService {
         logger.info { "[Vimeo] All pages finished." }
         return posts
     }
+
+    fun switch(name: String, isOn: Boolean) = mDataManager.switch(name, isOn)
+
+    fun getSwitch(name: String) = mDataManager.getSwitch(name)
 }

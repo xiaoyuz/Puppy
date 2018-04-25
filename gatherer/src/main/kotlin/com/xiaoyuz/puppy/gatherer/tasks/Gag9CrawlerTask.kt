@@ -20,17 +20,21 @@ class Gag9CrawlerTask {
 
     @PostConstruct
     fun init() {
-        logger.info { "[Gag9CrawlerTask] 9gag crawler task" }
+        logger.info { "[9GagCrawlerTask] 9gag crawler task" }
     }
 
     @Scheduled(initialDelay = 30 * 1000, fixedDelay = 5 * 60 * 1000) // 5 minutes
     fun task() {
-        logger.info { "[Gag9CrawlerTask] Crawler start." }
+        if (!mGatherService.getSwitch("9gag")) {
+            logger.info { "[9GagCrawlerTask] Switch is off." }
+            return
+        }
+        logger.info { "[9GagCrawlerTask] Crawler start." }
         val startTime = System.currentTimeMillis()
         GAG9_GROUPS.forEach {
             val list = mGatherService.gather9GagAllPosts(it)
-            logger.info { "[Gag9CrawlerTask] Tag ${it.first} finished. Return ${list.size} posts." }
+            logger.info { "[9GagCrawlerTask] Tag ${it.first} finished. Return ${list.size} posts." }
         }
-        logger.info { "[Gag9CrawlerTask] Crawler finished, time: ${(System.currentTimeMillis() - startTime) / 1000}s" }
+        logger.info { "[9GagCrawlerTask] Crawler finished, time: ${(System.currentTimeMillis() - startTime) / 1000}s" }
     }
 }

@@ -6,6 +6,7 @@ import com.xiaoyuz.puppy.datastore.manager.jpa.PostJpaRepository
 import com.xiaoyuz.puppy.datastore.manager.jpa.PostVideoRelationJpaRepository
 import com.xiaoyuz.puppy.datastore.manager.jpa.VideoJpaRepository
 import com.xiaoyuz.puppy.datastore.manager.redis.ModelRedisRepository
+import com.xiaoyuz.puppy.datastore.manager.redis.SwitchRedisRepository
 import com.xiaoyuz.puppy.datastore.model.Post
 import com.xiaoyuz.puppy.datastore.model.PostVideoRelation
 import com.xiaoyuz.puppy.datastore.model.Video
@@ -27,6 +28,12 @@ class DataManager {
     private lateinit var mIndexOperator: IndexOperator
     @Autowired
     private lateinit var mModelRedisRepository: ModelRedisRepository
+    @Autowired
+    private lateinit var mSwitchRedisRepository: SwitchRedisRepository
+
+    fun switch(name: String, isOn: Boolean) = mSwitchRedisRepository.setSwitch(name, isOn)
+
+    fun getSwitch(name: String) = mSwitchRedisRepository.getSwitch(name) ?: false
 
     fun addPost(post: Post)
             = (if (mPostJpaRepository.findByLink(post.link) == null) mPostJpaRepository.save(post) else null)?.apply {

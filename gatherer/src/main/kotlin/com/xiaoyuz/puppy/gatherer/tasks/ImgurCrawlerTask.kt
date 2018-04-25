@@ -25,6 +25,10 @@ class ImgurCrawlerTask {
 
     @Scheduled(initialDelay = 1 * 60 * 1000, fixedDelay = 10 * 60 * 1000) // 10 minutes
     fun task() {
+        if (!mGatherService.getSwitch("imgur")) {
+            logger.info { "[ImgurCrawlerTask] Switch is off." }
+            return
+        }
         logger.info { "[ImgurCrawlerTask] Crawler start." }
         val startTime = System.currentTimeMillis()
         IMGUR_TAGS.forEach {

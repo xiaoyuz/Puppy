@@ -8,6 +8,8 @@ import com.xiaoyuz.puppy.gatherer.service.GatherService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -20,6 +22,21 @@ class ManagerController {
 
     @Autowired
     private lateinit var mGatherService: GatherService
+
+    @PutMapping("/switch/{name}/{action}")
+    fun switch(@PathVariable("name") name: String,
+               @PathVariable("action") action: String): Boolean {
+        val on = when (action) {
+            "on" -> true
+            "off" -> false
+            else -> false
+        }
+        mGatherService.switch(name, on)
+        return on
+    }
+
+    @GetMapping("/switch/{name}")
+    fun isSwitchOn(@PathVariable("name") name: String) = mGatherService.getSwitch(name)
 
     @GetMapping("/craw/vimeo")
     fun crawVimeoPages(@RequestParam(value = "max") maxPage: Int): List<Post> {

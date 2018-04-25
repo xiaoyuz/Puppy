@@ -25,6 +25,10 @@ class VimeoCrawlerTask {
 
     @Scheduled(fixedDelay = 10 * 60 * 1000) // 10 minutes
     fun task() {
+        if (!mGatherService.getSwitch("vimeo")) {
+            logger.info { "[VimeoCrawlerTask] Switch is off." }
+            return
+        }
         logger.info { "[VimeoCrawlerTask] Crawler start." }
         val startTime = System.currentTimeMillis()
         VIMEO_CATEGORIES.forEach {
