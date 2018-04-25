@@ -13,4 +13,10 @@ class ContentService {
     fun getPostIds() = mDataManager.getPostIds()
 
     fun getPosts(ids: List<Int>) = mDataManager.getPostMapByIds(ids).let { map -> ids.mapNotNull { map[it] } }
+
+    fun getPostByPostId(postId: String) = mDataManager.getPostByPostId(postId)
+
+    fun getPostWithVideos(postId: String) = getPostByPostId(postId)?.apply {
+        videos = mDataManager.getVideosByPostId(id)
+    }
 }

@@ -10,6 +10,7 @@ import com.xiaoyuz.puppy.datastore.model.Post
 import com.xiaoyuz.puppy.datastore.model.PostVideoRelation
 import com.xiaoyuz.puppy.datastore.model.Video
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import java.sql.Timestamp
 
@@ -28,7 +29,9 @@ class DataManager {
     private lateinit var mModelRedisRepository: ModelRedisRepository
 
     fun addPost(post: Post)
-            = if (mPostJpaRepository.findByLink(post.link) == null) mPostJpaRepository.save(post) else null
+            = (if (mPostJpaRepository.findByLink(post.link) == null) mPostJpaRepository.save(post) else null)?.apply {
+        mIndexOperator.addIndex(POST_INDEX_KEY, id, createTime!!.time.toDouble())
+    }
 
     fun storeVideoInfos(videos: List<Video>) = videos.mapNotNull {
         if (mVideoJpaRepository.findByLink(it.link) == null) mVideoJpaRepository.save(it) else null
@@ -46,4 +49,12 @@ class DataManager {
             { mModelRedisRepository.getPosts(it) },
             { mPostJpaRepository.findByIdIn(it).associateBy { it.id } },
             { it.forEach { mModelRedisRepository.setPost(it.key, it.value) } })
+
+    @Cacheable(value = ["post"], key = "$POST_KEY_PREFIX.concat(#postId)",
+            cacheManager = "postCacheManager", unless = "#result == null")
+    fun getPostByPostId(postId: String) = mPostJpaRepository.findFirstByPostId(postId)
+
+    @Cacheable(value = ["video_list"], key = "$VIDEO_LIST_KEY_PREFIX.concat(#postId)",
+            cacheManager = "videoListCacheManager", unless = "#result == null")
+    fun getVideosByPostId(postId: Int) = mVideoJpaRepository.getVideosByPostId(postId)
 }

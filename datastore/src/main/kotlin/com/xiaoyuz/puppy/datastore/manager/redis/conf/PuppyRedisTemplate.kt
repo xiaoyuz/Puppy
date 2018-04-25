@@ -1,6 +1,8 @@
 package com.xiaoyuz.puppy.datastore.manager.redis.conf
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.xiaoyuz.puppy.datastore.model.Post
+import com.xiaoyuz.puppy.datastore.model.Video
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
@@ -29,4 +31,6 @@ object PuppyRedisSerializer {
     val boolean = Jackson2JsonRedisSerializer(Boolean::class.java)
     val objects = Jackson2JsonRedisSerializer(Any::class.java)
     val post = Jackson2JsonRedisSerializer(Post::class.java)
+    var videoList = Jackson2JsonRedisSerializer<List<Video>>(ObjectMapper().typeFactory
+            .constructParametricType(List::class.java, Video::class.java))
 }

@@ -38,10 +38,18 @@ class RedisConf {
     fun postRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate<Post>(PuppyRedisSerializer.post,
             factory)
 
+    @Bean
+    fun videoListRedisTemplate(factory: RedisConnectionFactory)
+            = PuppyRedisTemplate(PuppyRedisSerializer.videoList, factory)
+
     @Bean("postCacheManager")
     @Primary
     fun postCacheManager(factory: RedisConnectionFactory): RedisCacheManager
             = genCacheManager(factory, PuppyRedisSerializer.post, Duration.ofDays(DEFAULT_EXPIRE_DAY))
+
+    @Bean("videoListCacheManager")
+    fun videoListCacheManager(factory: RedisConnectionFactory)
+            = genCacheManager(factory, PuppyRedisSerializer.videoList, Duration.ofDays(DEFAULT_EXPIRE_DAY))
 
     private fun genCacheManager(factory: RedisConnectionFactory, valueSerializer: RedisSerializer<*>, ttl: Duration)
             = RedisCacheManager.builder(factory).cacheDefaults(defaultCacheConfig().disableKeyPrefix()
