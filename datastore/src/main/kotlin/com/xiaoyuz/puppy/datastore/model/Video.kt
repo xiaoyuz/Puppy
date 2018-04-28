@@ -22,7 +22,7 @@ import javax.persistence.Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Video(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
                  @Column(name = "video_id", nullable = false) var videoId: String = "",
-                 @Column(nullable = false) var name: String = "",
+                 @Column(nullable = false, columnDefinition = "TEXT") var name: String = "",
                  @Column(columnDefinition = "TEXT") var description: String = "",
                  @Column(nullable = false) var link: String = "", var duration: Int = 0,
                  var width: Int = 0, var height: Int = 0,

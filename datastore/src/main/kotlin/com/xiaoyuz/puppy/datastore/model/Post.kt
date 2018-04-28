@@ -22,7 +22,7 @@ import javax.persistence.Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Post(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int = 0,
                 @Column(name = "post_id", nullable = false, length = 32) var postId: String = "",
-                @Column(nullable = false) var name: String = "",
+                @Column(nullable = false, columnDefinition = "TEXT") var name: String = "",
                 @Column(nullable = false) var link: String = "",
                 @Column(name = "tag", nullable = false) var tagType: TagType = TagType.DEFAULT,
                 @Column(columnDefinition = "TEXT") var thumbnails: String = "[]",
