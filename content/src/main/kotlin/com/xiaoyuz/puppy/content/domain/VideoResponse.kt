@@ -18,7 +18,7 @@ data class VideoResponse(var id: String, var title: String? = null, var descript
                          var core: String) {
     constructor(video: Video) : this(id = video.videoId, title = video.name, description = video.description,
             link = video.link, duration = video.duration, width = video.width, height = video.height,
-            videoType = video.videoType.name, sourceType = video.videoType.name,
+            videoType = video.videoType.name, sourceType = video.sourceType.name,
             thumbnails = JSONArray(video.thumbnails).map { ThumbnailResponse(it as JSONObject) },
             createTime = video.createTime?.time, core = video.core)
 }
