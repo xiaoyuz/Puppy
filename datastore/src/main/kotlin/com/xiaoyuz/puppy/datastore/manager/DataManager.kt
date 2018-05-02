@@ -2,6 +2,7 @@ package com.xiaoyuz.puppy.datastore.manager
 
 import com.xiaoyuz.puppy.common.extensions.currentTimestamp
 import com.xiaoyuz.puppy.common.extensions.gatherMapFromCacheAndDataSource
+import com.xiaoyuz.puppy.datastore.domains.PostMediaType
 import com.xiaoyuz.puppy.datastore.manager.jpa.PostJpaRepository
 import com.xiaoyuz.puppy.datastore.manager.jpa.PostVideoRelationJpaRepository
 import com.xiaoyuz.puppy.datastore.manager.jpa.VideoJpaRepository
@@ -38,6 +39,9 @@ class DataManager {
     fun addPost(post: Post)
             = (if (mPostJpaRepository.findByLink(post.link) == null) mPostJpaRepository.save(post) else null)?.apply {
         mIndexOperator.addIndex(POST_INDEX_KEY, id, createTime!!.time.toDouble())
+        if (post.meidaType == PostMediaType.GIF || post.meidaType == PostMediaType.VIDEO) {
+            mIndexOperator.addIndex(POST_ANIMATED_INDEX_KEY, id, createTime!!.time.toDouble())
+        }
     }
 
     fun storeVideoInfos(videos: List<Video>) = videos.mapNotNull {
@@ -51,6 +55,9 @@ class DataManager {
 
     fun getPostIds() = mIndexOperator.getIntListWithIndexes(POST_INDEX_KEY,
             { mPostJpaRepository.findPostIndex() }, { (it as Timestamp).time.toDouble() })
+
+    fun getAnimatedPostIds() = mIndexOperator.getIntListWithIndexes(POST_ANIMATED_INDEX_KEY,
+            { mPostJpaRepository.findAnimatedPostIndex() }, { (it as Timestamp).time.toDouble() })
 
     fun getPostMapByIds(ids: List<Int>) = gatherMapFromCacheAndDataSource(ids,
             { mModelRedisRepository.getPosts(it) },

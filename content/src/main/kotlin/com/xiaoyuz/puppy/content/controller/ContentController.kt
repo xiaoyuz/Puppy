@@ -36,6 +36,15 @@ class ContentController {
         return genPostResponsesBySessionWithPostIds(pageId, count, deviceId, { mContentService.getPostIds() })
     }
 
+    @GetMapping("/animated")
+    fun animatedFeed(@RequestHeader("Device-Id", required = false) deviceId: String? = null,
+                     @RequestParam(value = "start_id", required = false, defaultValue = "") pageId: String,
+                     @RequestParam(value = "count", required = false, defaultValue = "20") count: Int,
+                     @RequestParam(value = "qid", required = false, defaultValue = "") qid: String): ApiResponse<List<FeedResponse>> {
+        logger.debug { "[Qid=$qid]animated_feed:${pageId}_${count}_$deviceId" }
+        return genPostResponsesBySessionWithPostIds(pageId, count, deviceId, { mContentService.getAnimatedPostIds() })
+    }
+
     @GetMapping("/post/{postId}")
     fun getPost(@RequestHeader("Device-Id", required = false) deviceId: String? = null,
                 @PathVariable("postId") postId: String,

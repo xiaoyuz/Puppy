@@ -8,6 +8,7 @@ internal const val SESSION_SID_KEY = "${COMMON_PREFIX}session_sid:"
 internal const val SESSION_DEVICE_KEY = "${COMMON_PREFIX}session_device_id:"
 
 internal const val POST_INDEX_KEY = "${COMMON_PREFIX}post_index"
+internal const val POST_ANIMATED_INDEX_KEY = "${COMMON_PREFIX}post_animated_index"
 
 internal const val POST_PRIMARY_KEY_STRING_PREFIX = "${COMMON_PREFIX}post_prim_id_"
 internal const val POST_KEY_STRING_PREFIX = "${COMMON_PREFIX}post_post_id_"
