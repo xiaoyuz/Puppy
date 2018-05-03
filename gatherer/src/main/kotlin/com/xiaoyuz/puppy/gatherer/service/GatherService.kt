@@ -41,6 +41,8 @@ class GatherService {
             posts.addAll(page.first)
         }
         logger.info { "[9Gag] First page finished." }
+        val deletedCount = removeEarliestPosts()
+        logger.info { "Deleted post count: $deletedCount" }
         return posts
     }
 
@@ -57,6 +59,8 @@ class GatherService {
             }
         }
         logger.info { "[Imgur] All pages finished." }
+        val deletedCount = removeEarliestPosts()
+        logger.info { "Deleted post count: $deletedCount" }
         return posts
     }
 
@@ -73,8 +77,12 @@ class GatherService {
             }
         }
         logger.info { "[Vimeo] All pages finished." }
+        val deletedCount = removeEarliestPosts()
+        logger.info { "Deleted post count: $deletedCount" }
         return posts
     }
+
+    fun removeEarliestPosts() = mDataManager.deleteEarliestPosts()
 
     fun switch(name: String, isOn: Boolean) = mDataManager.switch(name, isOn)
 

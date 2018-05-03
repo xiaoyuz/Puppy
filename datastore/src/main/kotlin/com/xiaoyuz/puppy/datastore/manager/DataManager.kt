@@ -12,9 +12,12 @@ import com.xiaoyuz.puppy.datastore.model.Post
 import com.xiaoyuz.puppy.datastore.model.PostVideoRelation
 import com.xiaoyuz.puppy.datastore.model.Video
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import java.sql.Timestamp
+
+private const val MAX_POST_COUNT = 500
 
 @Component
 open class DataManager {
@@ -71,4 +74,25 @@ open class DataManager {
     @Cacheable(value = ["video_list"], key = "$VIDEO_LIST_KEY_PREFIX.concat(#postId)",
             cacheManager = "videoListCacheManager", unless = "#result == null")
     fun getVideosByPostId(postId: Int) = mVideoJpaRepository.getVideosByPostId(postId)
+
+    @CacheEvict(value = ["post"], key = "$POST_KEY_PREFIX.concat(#post.postId)",
+            cacheManager = "postCacheManager")
+    fun deletePost(post: Post) {
+        mPostJpaRepository.delete(post)
+        val relations = mPostVideoRelationJpaRepository.findByPostId(post.id)
+        relations.forEach {
+            mPostVideoRelationJpaRepository.delete(it)
+            mVideoJpaRepository.findById(it.videoId).let { it.ifPresent { mVideoJpaRepository.delete(it) } }
+        }
+        mModelRedisRepository.deletePost(post.id)
+        mModelRedisRepository.deletePostVideos(post.id)
+        mIndexOperator.deleteIndex(POST_INDEX_KEY, post.id)
+    }
+
+    fun deleteEarliestPosts(): Int {
+        val limitedPostCreateTime = mPostJpaRepository.findPostionPostIndex(MAX_POST_COUNT)[1] as Timestamp
+        val posts = mPostJpaRepository.findByCreateTimeBefore(limitedPostCreateTime)
+        posts.forEach { deletePost(it) }
+        return posts.size
+    }
 }

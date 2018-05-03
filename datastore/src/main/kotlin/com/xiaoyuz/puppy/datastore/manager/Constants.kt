@@ -12,7 +12,8 @@ internal const val POST_ANIMATED_INDEX_KEY = "${COMMON_PREFIX}post_animated_inde
 
 internal const val POST_PRIMARY_KEY_STRING_PREFIX = "${COMMON_PREFIX}post_prim_id_"
 internal const val POST_KEY_STRING_PREFIX = "${COMMON_PREFIX}post_post_id_"
+internal const val VIDEO_LIST_KEY_STRING_PREFIX = "${COMMON_PREFIX}video_list_post_id_"
 internal const val SWITCH_KEY_PREFIX = "${COMMON_PREFIX}switch_name_"
 
 internal const val POST_KEY_PREFIX = "'$POST_KEY_STRING_PREFIX'" // SpEL
-internal const val VIDEO_LIST_KEY_PREFIX = "'${COMMON_PREFIX}video_list_post_id_'" // SpEL
+internal const val VIDEO_LIST_KEY_PREFIX = "'$VIDEO_LIST_KEY_STRING_PREFIX'" // SpEL
