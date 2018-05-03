@@ -15,40 +15,40 @@ import java.time.Duration
 const val DEFAULT_EXPIRE_DAY: Long = 2 // TWO DAY
 
 @Configuration
-class RedisConf {
+open class RedisConf {
 
     @Bean
-    fun stringRedisTemplate(factory: RedisConnectionFactory) = StringRedisTemplate(factory)
+    open fun stringRedisTemplate(factory: RedisConnectionFactory) = StringRedisTemplate(factory)
 
     @Bean
-    fun intRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate(PuppyRedisSerializer.integer, factory)
+    open fun intRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate(PuppyRedisSerializer.integer, factory)
 
     @Bean
-    fun longRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate(PuppyRedisSerializer.long, factory)
+    open fun longRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate(PuppyRedisSerializer.long, factory)
 
     @Bean
-    fun booleanRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate(PuppyRedisSerializer.boolean,
+    open fun booleanRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate(PuppyRedisSerializer.boolean,
             factory)
 
     @Bean
-    fun objectRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate<Any>(PuppyRedisSerializer.objects,
+    open fun objectRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate<Any>(PuppyRedisSerializer.objects,
             factory)
 
     @Bean
-    fun postRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate<Post>(PuppyRedisSerializer.post,
+    open fun postRedisTemplate(factory: RedisConnectionFactory) = PuppyRedisTemplate<Post>(PuppyRedisSerializer.post,
             factory)
 
     @Bean
-    fun videoListRedisTemplate(factory: RedisConnectionFactory)
+    open fun videoListRedisTemplate(factory: RedisConnectionFactory)
             = PuppyRedisTemplate(PuppyRedisSerializer.videoList, factory)
 
     @Bean("postCacheManager")
     @Primary
-    fun postCacheManager(factory: RedisConnectionFactory): RedisCacheManager
+    open fun postCacheManager(factory: RedisConnectionFactory): RedisCacheManager
             = genCacheManager(factory, PuppyRedisSerializer.post, Duration.ofDays(DEFAULT_EXPIRE_DAY))
 
     @Bean("videoListCacheManager")
-    fun videoListCacheManager(factory: RedisConnectionFactory)
+    open fun videoListCacheManager(factory: RedisConnectionFactory)
             = genCacheManager(factory, PuppyRedisSerializer.videoList, Duration.ofDays(DEFAULT_EXPIRE_DAY))
 
     private fun genCacheManager(factory: RedisConnectionFactory, valueSerializer: RedisSerializer<*>, ttl: Duration)

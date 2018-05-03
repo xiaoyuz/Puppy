@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @Component
 @ConditionalOnProperty(value = ["schedule.task.9gag.crawler.enable"], havingValue = "true")
-class Gag9CrawlerTask {
+open class Gag9CrawlerTask {
 
     @Autowired
     private lateinit var mGatherService: GatherService

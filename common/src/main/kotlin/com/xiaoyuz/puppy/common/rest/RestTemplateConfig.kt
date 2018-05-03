@@ -11,16 +11,16 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.web.client.RestTemplate
 
 @Configuration
-class RestTemplateConfig {
+open class RestTemplateConfig {
     @Bean
     @Primary
-    fun restTemplate(): RestTemplate {
+    open fun restTemplate(): RestTemplate {
         return RestTemplate(httpRequestFactory())
     }
 
     @Bean
     @Primary
-    fun httpRequestFactory(): ClientHttpRequestFactory {
+    open fun httpRequestFactory(): ClientHttpRequestFactory {
         return HttpComponentsClientHttpRequestFactory(httpClient()).apply {
             setReadTimeout(2000)
             setConnectTimeout(2000)
@@ -28,7 +28,7 @@ class RestTemplateConfig {
     }
 
     @Bean
-    fun longTimeHttpRequestFactory(): ClientHttpRequestFactory {
+    open fun longTimeHttpRequestFactory(): ClientHttpRequestFactory {
         return HttpComponentsClientHttpRequestFactory(httpClient()).apply {
             setReadTimeout(120000)
             setConnectTimeout(30000)
@@ -37,7 +37,7 @@ class RestTemplateConfig {
 
     @Bean
     @Primary
-    fun httpClient(): HttpClient {
+    open fun httpClient(): HttpClient {
         val connectionManager = PoolingHttpClientConnectionManager()
         connectionManager.maxTotal = 500
         connectionManager.defaultMaxPerRoute = 50

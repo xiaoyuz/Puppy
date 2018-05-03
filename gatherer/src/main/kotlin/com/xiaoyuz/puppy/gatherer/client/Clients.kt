@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 @Component
-class VimeoClient {
+open class VimeoClient {
 
     @Autowired
     private lateinit var mVimeo: Vimeo
@@ -36,7 +36,7 @@ class VimeoClient {
 }
 
 @Component
-class ImgurClient {
+open class ImgurClient {
 
     @Value("\${third_party.imgur.app.id}")
     private lateinit var mImgurAppId: String
@@ -62,7 +62,7 @@ class ImgurClient {
 }
 
 @Component
-class Gag9Client {
+open class Gag9Client {
 
     @Value("\${third_party.9gag.api.host}")
     private lateinit var m9GagApiHost: String

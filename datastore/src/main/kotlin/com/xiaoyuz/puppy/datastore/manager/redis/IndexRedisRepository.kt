@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 private const val INDEX_EXPIRE_DAYS = 1L
 
 @Repository
-class IndexRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRedisTemplate<Any>) {
+open class IndexRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRedisTemplate<Any>) {
 
     fun addIndexes(name: String, indexes: List<Array<Any>>, scoreConvert: (Any) -> Double) {
         mObjectRedisTemplate.opsForZSet().add(getIndexKey(name),

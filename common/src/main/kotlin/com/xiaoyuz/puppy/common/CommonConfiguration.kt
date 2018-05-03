@@ -5,4 +5,4 @@ import org.springframework.context.annotation.PropertySource
 
 @Configuration
 @PropertySource("classpath:/common.properties")
-class CommonConfiguration
+open class CommonConfiguration

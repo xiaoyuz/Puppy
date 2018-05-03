@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
 import java.sql.Timestamp
 
 @Component
-class DataManager {
+open class DataManager {
 
     @Autowired
     private lateinit var mPostJpaRepository: PostJpaRepository

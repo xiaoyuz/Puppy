@@ -11,7 +11,7 @@ private const val EXPIRE_DAY = 1L
  * Common redis repo for list count.
  */
 @Repository
-class CountRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRedisTemplate<Any>,
+open class CountRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRedisTemplate<Any>,
                            private val mLongRedisTemplate: PuppyRedisTemplate<Long>) {
 
     fun exists(key: String) = mObjectRedisTemplate.hasKey(key)

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 
 
 @Configuration
-class ClientsConfig {
+open class ClientsConfig {
 
     @Value("\${third_party.vimeo.token}")
     private lateinit var mToken: String

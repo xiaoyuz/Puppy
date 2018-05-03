@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 private const val EXPIRE_DAYS = 1L
 
 @Repository
-class ModelRedisRepository {
+open class ModelRedisRepository {
 
     @Autowired
     private lateinit var mPostRedisTemplate: PuppyRedisTemplate<Post>

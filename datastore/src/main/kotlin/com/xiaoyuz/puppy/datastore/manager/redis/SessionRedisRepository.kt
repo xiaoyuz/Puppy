@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 private const val SESSION_EXPIRE_HOURS = 1L
 
 @Repository
-class SessionRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRedisTemplate<Any>) {
+open class SessionRedisRepository(@Autowired private val mObjectRedisTemplate: PuppyRedisTemplate<Any>) {
 
     fun addSessions(deviceId: String?, sid: String, sessions: List<Any>?) {
         if (sessions != null && !sessions.isEmpty()) {
