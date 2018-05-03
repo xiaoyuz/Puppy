@@ -19,7 +19,7 @@ internal class IndexOperator {
         mIndexRedisRepository.addIndexes(indexKey, indexes, scoreConvert)
     }
 
-    fun deleteIndex(indexKey: String, index: Any) = mIndexRedisRepository.deleteIndex(indexKey, index.toString())
+    fun deleteIndex(indexKey: String, index: Any) = mIndexRedisRepository.deleteIndex(indexKey, index)
 
     fun flushIndex(indexKey: String) = mIndexRedisRepository.flushIndexes(indexKey)
 

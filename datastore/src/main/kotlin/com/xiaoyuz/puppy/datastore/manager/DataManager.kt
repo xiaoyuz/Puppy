@@ -17,7 +17,7 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import java.sql.Timestamp
 
-private const val MAX_POST_COUNT = 500
+private const val MAX_POST_COUNT = 1200
 
 @Component
 class DataManager {
@@ -87,12 +87,12 @@ class DataManager {
         mModelRedisRepository.deletePost(post.id)
         mModelRedisRepository.deletePostVideos(post.id)
         mIndexOperator.deleteIndex(POST_INDEX_KEY, post.id)
+        mIndexOperator.deleteIndex(POST_ANIMATED_INDEX_KEY, post.id)
     }
 
-    fun deleteEarliestPosts(): Int {
-        val limitedPostCreateTime = mPostJpaRepository.findPostionPostIndex(MAX_POST_COUNT)[1] as Timestamp
-        val posts = mPostJpaRepository.findByCreateTimeBefore(limitedPostCreateTime)
+    fun deleteEarliestPosts() = mPostJpaRepository.findPositionPostIndex(MAX_POST_COUNT)?.createTime?.let {
+        val posts = mPostJpaRepository.findByCreateTimeBefore(it)
         posts.forEach { deletePost(it) }
-        return posts.size
-    }
+        posts.size
+    } ?: 0
 }
