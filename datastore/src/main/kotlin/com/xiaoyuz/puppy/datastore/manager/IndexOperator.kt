@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-internal open class IndexOperator {
+internal class IndexOperator {
     @Autowired
     private lateinit var mIndexRedisRepository: IndexRedisRepository
 

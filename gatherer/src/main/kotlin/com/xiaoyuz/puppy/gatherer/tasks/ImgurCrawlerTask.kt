@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @Component
 @ConditionalOnProperty(value = ["schedule.task.imgur.crawler.enable"], havingValue = "true")
-open class ImgurCrawlerTask {
+class ImgurCrawlerTask {
 
     @Autowired
     private lateinit var mGatherService: GatherService

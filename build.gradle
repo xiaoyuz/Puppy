@@ -58,7 +58,6 @@ subprojects {
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: "${springBootVersion}"
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: "${springBootVersion}"
-        testCompile('org.springframework.boot:spring-boot-starter-test')
         testCompile group: 'junit', name: 'junit', version: '4.12'
     }
 }

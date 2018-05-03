@@ -20,7 +20,7 @@ import java.sql.Timestamp
 private const val MAX_POST_COUNT = 500
 
 @Component
-open class DataManager {
+class DataManager {
 
     @Autowired
     private lateinit var mPostJpaRepository: PostJpaRepository

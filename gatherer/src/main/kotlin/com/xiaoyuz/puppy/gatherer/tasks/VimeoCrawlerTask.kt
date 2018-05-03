@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @Component
 @ConditionalOnProperty(value = ["schedule.task.vimeo.crawler.enable"], havingValue = "true")
-open class VimeoCrawlerTask {
+class VimeoCrawlerTask {
 
     @Autowired
     private lateinit var mGatherService: GatherService

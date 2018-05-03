@@ -13,4 +13,4 @@ import org.springframework.scheduling.annotation.EnableAsync
 @PropertySource("classpath:/datastore.properties")
 @EnableCaching
 @EnableAsync
-open class DataStoreConfiguration
+class DataStoreConfiguration

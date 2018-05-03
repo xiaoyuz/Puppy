@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-open class SwitchRedisRepository {
+class SwitchRedisRepository {
 
     @Autowired
     private lateinit var mBooleanRedisTemplate: PuppyRedisTemplate<Boolean>

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 import java.nio.charset.Charset
 
 @Component
-open class CrawlerClient(@Autowired private val mWebClient: WebClient) {
+class CrawlerClient(@Autowired private val mWebClient: WebClient) {
 
     fun getDoc(url: String) = Jsoup.parse(mWebClient.getPage<HtmlPage>(url).asXml())
 

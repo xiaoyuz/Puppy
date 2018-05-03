@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-open class SessionManager {
+class SessionManager {
 
     @Autowired
     private lateinit var mSessionRedisRepository: SessionRedisRepository
