@@ -32,7 +32,7 @@ class GatherService {
     private lateinit var mVimeoClient: VimeoClient
     @Autowired
     private lateinit var mDataManager: DataManager
-    @Value("\${post.resouce.path}")
+    @Value("\${post.resource.path}")
     private lateinit var mPostResourcePath: String
 
     private fun newPost(post: Post) {

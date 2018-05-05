@@ -37,7 +37,7 @@ class DataManager {
     private lateinit var mModelRedisRepository: ModelRedisRepository
     @Autowired
     private lateinit var mSwitchRedisRepository: SwitchRedisRepository
-    @Value("\${post.resouce.path}")
+    @Value("\${post.resource.path}")
     private lateinit var mPostResourcePath: String
 
     fun switch(name: String, isOn: Boolean) = mSwitchRedisRepository.setSwitch(name, isOn)
