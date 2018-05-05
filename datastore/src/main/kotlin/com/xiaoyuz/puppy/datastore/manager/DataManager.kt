@@ -11,10 +11,13 @@ import com.xiaoyuz.puppy.datastore.manager.redis.SwitchRedisRepository
 import com.xiaoyuz.puppy.datastore.model.Post
 import com.xiaoyuz.puppy.datastore.model.PostVideoRelation
 import com.xiaoyuz.puppy.datastore.model.Video
+import org.apache.commons.io.FileUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
+import java.io.File
 import java.sql.Timestamp
 
 private const val MAX_POST_COUNT = 1200
@@ -34,6 +37,8 @@ class DataManager {
     private lateinit var mModelRedisRepository: ModelRedisRepository
     @Autowired
     private lateinit var mSwitchRedisRepository: SwitchRedisRepository
+    @Value("\${post.resouce.path}")
+    private lateinit var mPostResourcePath: String
 
     fun switch(name: String, isOn: Boolean) = mSwitchRedisRepository.setSwitch(name, isOn)
 
@@ -90,6 +95,7 @@ class DataManager {
         mModelRedisRepository.deletePostVideos(post.id)
         mIndexOperator.deleteIndex(POST_INDEX_KEY, post.id)
         mIndexOperator.deleteIndex(POST_ANIMATED_INDEX_KEY, post.id)
+        FileUtils.deleteDirectory(File("$mPostResourcePath/p_${post.postId}"))
     }
 
     fun deleteEarliestPosts() = mPostJpaRepository.findPositionPostIndex(MAX_POST_COUNT)?.createTime?.let {
