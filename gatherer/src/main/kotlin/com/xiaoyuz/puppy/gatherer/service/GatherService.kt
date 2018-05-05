@@ -1,5 +1,6 @@
 package com.xiaoyuz.puppy.gatherer.service
 
+import com.xiaoyuz.puppy.datastore.domains.PostMediaType
 import com.xiaoyuz.puppy.datastore.domains.TagType
 import com.xiaoyuz.puppy.datastore.manager.DataManager
 import com.xiaoyuz.puppy.datastore.model.Post
@@ -37,8 +38,9 @@ class GatherService {
         val posts = mutableListOf<Post>()
         val page = mGag9Client.getGroupPosts(tagConfigPair)
         if (page.first.isNotEmpty()) {
-            page.first.forEach { newPost(it) }
-            posts.addAll(page.first)
+            val animatedPosts = page.first.filterNot { it.meidaType == PostMediaType.IMAGE }
+            animatedPosts.forEach { newPost(it) }
+            posts.addAll(animatedPosts)
         }
         logger.info { "[9Gag] First page finished." }
         val deletedCount = removeEarliestPosts()
@@ -51,8 +53,9 @@ class GatherService {
         for (i in 0..maxPage) {
             val perPagePosts = mImgurClient.getGalleyTagPosts(tagConfigPair, i)
             if (perPagePosts.isNotEmpty()) {
-                perPagePosts.forEach { newPost(it) }
-                posts.addAll(perPagePosts)
+                val animatedPosts = perPagePosts.filterNot { it.meidaType == PostMediaType.IMAGE }
+                animatedPosts.forEach { newPost(it) }
+                posts.addAll(animatedPosts)
                 logger.info { "[Imgur] Page $i is finished. Count is ${posts.size}" }
             } else {
                 break
