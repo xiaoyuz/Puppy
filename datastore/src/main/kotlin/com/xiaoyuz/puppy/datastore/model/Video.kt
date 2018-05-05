@@ -30,7 +30,7 @@ data class Video(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id:
                  @Column(name = "source_type", nullable = false) var sourceType: VideoSource = VideoSource.DEFAULT,
                  @Column(columnDefinition = "TEXT") var thumbnails: String = "[]",
                  @Column(name = "create_time", nullable = false) var createTime: Timestamp? = null,
-                 @Column(nullable = false) var core: String = "")
+                 @Column(columnDefinition = "TEXT", nullable = false) var core: String = "")
 
 fun vimeoResult2Video(json: JSONObject) = Video(videoId = reducedUUID(),
         name = json.getString("name"), link = json.optString("link"),

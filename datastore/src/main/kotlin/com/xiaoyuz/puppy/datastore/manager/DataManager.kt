@@ -39,6 +39,8 @@ class DataManager {
 
     fun getSwitch(name: String) = mSwitchRedisRepository.getSwitch(name) ?: false
 
+    fun checkPostExists(post: Post) = mPostJpaRepository.findByLink(post.link) != null
+
     fun addPost(post: Post)
             = (if (mPostJpaRepository.findByLink(post.link) == null) mPostJpaRepository.save(post) else null)?.apply {
         mIndexOperator.addIndex(POST_INDEX_KEY, id, createTime!!.time.toDouble())

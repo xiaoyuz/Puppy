@@ -3,7 +3,10 @@ package com.xiaoyuz.puppy.datastore.model
 import com.xiaoyuz.puppy.common.extensions.map
 import org.json.JSONObject
 
-data class Thumbnail(var width: Int = 0, var height: Int = 0, var url: String = "")
+data class Thumbnail(var width: Int = 0, var height: Int = 0, var url: String = "") {
+    constructor(json: JSONObject) : this(width = json.optInt("width"), height = json.optInt("height"),
+            url = json.optString("url"))
+}
 
 fun parseVimeoThumbnails(json: JSONObject) = json.getJSONObject("pictures").getJSONArray("sizes").map {
     it as JSONObject
