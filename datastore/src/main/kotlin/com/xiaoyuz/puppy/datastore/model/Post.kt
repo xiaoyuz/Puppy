@@ -8,6 +8,7 @@ import com.xiaoyuz.puppy.datastore.domains.PostMediaType
 import com.xiaoyuz.puppy.datastore.domains.TagType
 import com.xiaoyuz.puppy.datastore.domains.VideoSource
 import com.xiaoyuz.puppy.datastore.domains.VideoType
+import org.apache.commons.text.StringEscapeUtils
 import org.json.JSONObject
 import java.sql.Timestamp
 import javax.persistence.Column
@@ -34,7 +35,8 @@ data class Post(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: 
 
 fun vimeoResult2Post(json: JSONObject, tagType: TagType): Post {
     val video = vimeoResult2Video(json)
-    return Post(name = json.getString("name"), tagType = tagType, description = json.optString("description"),
+    return Post(name = StringEscapeUtils.unescapeHtml4(json.getString("name")), tagType = tagType,
+            description = StringEscapeUtils.unescapeHtml4(json.optString("description")),
             link = json.optString("link"), postId = reducedUUID(), sourceType = video.sourceType,
             meidaType = getPostMediaType(video.videoType)).apply {
         thumbnails = video.thumbnails
@@ -48,7 +50,8 @@ fun imgurResult2Post(json: JSONObject, tagType: TagType): Post {
         it as JSONObject
         imgurResult2Video(it)
     }?: listOf(imgurResult2Video(json))
-    return Post(name = json.optString("title"), tagType = tagType, description = json.optString("description"),
+    return Post(name = StringEscapeUtils.unescapeHtml4(json.optString("title")), tagType = tagType,
+            description = StringEscapeUtils.unescapeHtml4(json.optString("description")),
             link = json.optString("link"), thumbnails = videos.first().thumbnails,
             postId = reducedUUID(), videos = videos, createTime = currentTimestamp(),
             sourceType = videos.firstOrNull()?.sourceType ?: VideoSource.DEFAULT,
@@ -61,8 +64,8 @@ fun imgurResult2Post(json: JSONObject, tagType: TagType): Post {
 
 fun gag9Result2Post(json: JSONObject, tagType: TagType): Post {
     val video = gag9Result2Video(json)
-    return Post(name = json.optString("title"), tagType = tagType, link = json.optString("url"),
-            thumbnails = video.thumbnails, postId = reducedUUID(),
+    return Post(name = StringEscapeUtils.unescapeHtml4(json.optString("title")), tagType = tagType,
+            link = json.optString("url"), thumbnails = video.thumbnails, postId = reducedUUID(),
             videos = listOf(video), createTime = currentTimestamp(),
             sourceType = video.sourceType, meidaType = getPostMediaType(video.videoType))
 }

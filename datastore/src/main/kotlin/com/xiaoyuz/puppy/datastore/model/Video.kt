@@ -5,6 +5,7 @@ import com.xiaoyuz.puppy.common.extensions.currentTimestamp
 import com.xiaoyuz.puppy.common.extensions.reducedUUID
 import com.xiaoyuz.puppy.datastore.domains.VideoSource
 import com.xiaoyuz.puppy.datastore.domains.VideoType
+import org.apache.commons.text.StringEscapeUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
@@ -33,9 +34,9 @@ data class Video(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id:
                  @Column(columnDefinition = "TEXT", nullable = false) var core: String = "")
 
 fun vimeoResult2Video(json: JSONObject) = Video(videoId = reducedUUID(),
-        name = json.getString("name"), link = json.optString("link"),
-        description = json.optString("description"), duration = json.getInt("duration"),
-        width = json.getInt("width"), height = json.getInt("height"),
+        name = StringEscapeUtils.unescapeHtml4(json.getString("name")), link = json.optString("link"),
+        description = StringEscapeUtils.unescapeHtml4(json.optString("description")),
+        duration = json.getInt("duration"), width = json.getInt("width"), height = json.getInt("height"),
         videoType = VideoType.VIDEO, sourceType = VideoSource.VIMEO).apply {
     val createTimeStr = json.getString("created_time").split("+").first()
     val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -45,9 +46,10 @@ fun vimeoResult2Video(json: JSONObject) = Video(videoId = reducedUUID(),
     thumbnails = JSONArray(parseVimeoThumbnails(json)).toString()
 }
 
-fun imgurResult2Video(json: JSONObject) = Video(videoId = reducedUUID(), name = json.optString("title"),
-        description = json.optString("description"), link = json.optString("link"),
-        width = json.getInt("width"), height = json.getInt("height"),
+fun imgurResult2Video(json: JSONObject) = Video(videoId = reducedUUID(),
+        name = StringEscapeUtils.unescapeHtml4(json.optString("title")),
+        description = StringEscapeUtils.unescapeHtml4(json.optString("description")),
+        link = json.optString("link"), width = json.getInt("width"), height = json.getInt("height"),
         sourceType = VideoSource.IMGUR, createTime = Timestamp(json.getLong("datetime") * 1000),
         core = json.getString("link")).apply {
     videoType = when {
@@ -58,7 +60,8 @@ fun imgurResult2Video(json: JSONObject) = Video(videoId = reducedUUID(), name = 
     thumbnails = JSONArray(parseImgurThumbnails(json)).toString()
 }
 
-fun gag9Result2Video(json: JSONObject) = Video(videoId = reducedUUID(), name = json.optString("title"),
+fun gag9Result2Video(json: JSONObject) = Video(videoId = reducedUUID(),
+        name = StringEscapeUtils.unescapeHtml4(json.optString("title")),
         link = json.optString("url"), createTime = currentTimestamp(), sourceType = VideoSource.GAG9).apply {
     videoType = when {
         json.getString("type") == "Photo" -> VideoType.IMAGE
